@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const path = require('path');
 
-const port = 3000;
+const port = process.env.PORT | 3000;
 
 const userRoutes=require("./routes/user-route");
 const productRoutes=require("./routes/product-route");
@@ -22,8 +22,11 @@ app.listen(port, () => {
 
 async function connectDb() {
   try {
-    await mongoose.connect('mongodb+srv://chanche:chanche1234@cluster0.ml0dexi.mongodb.net/eCommerce?retryWrites=true&w=majority', {
-        dbName: 'eCommerce'});
+    await mongoose.connect(process.env.MONGODB_URI, {
+        dbName: 'eCommerce',
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
     console.log('Conectado a la base de datos');
   } catch (error) {
     console.error('Error conectando a la base de datos:', error);
